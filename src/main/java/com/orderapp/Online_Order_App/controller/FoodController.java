@@ -18,7 +18,7 @@ public class FoodController {
     @Autowired
     private FoodService foodService;
 
-    @PostMapping("/save")
+    @PostMapping("/savee")
     public ResponseEntity<ResponseStructure<Food>> createFood(@RequestBody Food food) {
         Food saved = foodService.createFood(food);
 
