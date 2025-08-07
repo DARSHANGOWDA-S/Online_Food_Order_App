@@ -3,6 +3,7 @@ package com.orderapp.Online_Order_App.service;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,6 +56,12 @@ public class RestaurantServiceImplementation implements RestaurantService{
 	public void deleteRestaurant(Integer id) {
 	    Restaurant restaurant = getById(id);                         // Reuse your existing getById method for validation
 	    restaurantRepository.delete(restaurant);
+	}
+
+	@Override
+	public Restaurant assignFood(Integer restaurantId, Set<Integer> food) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
