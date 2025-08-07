@@ -8,5 +8,6 @@ import lombok.Data;
 public class PaymentDto {
 	private List<OrderItemRequest> orderItems;
 	private boolean isPaymentSuccesful;
+	private Integer restaurantId;
 
 }

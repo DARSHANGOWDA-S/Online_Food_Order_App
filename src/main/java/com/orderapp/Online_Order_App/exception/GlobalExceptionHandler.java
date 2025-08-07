@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.orderapp.Online_Order_App.dto.ResponseStructure;
+import com.sun.tools.attach.AttachOperationFailedException;
 
 @RestControllerAdvice             //it is represent the bean and it is the responsible for the exception thrown in the 
 public class GlobalExceptionHandler {
@@ -24,6 +25,12 @@ public class GlobalExceptionHandler {
 		
 	}
 	
-	public ResponseEntity<ResponseStructure<String>>
-
+	@ExceptionHandler(AttachOperationFailedException.class)
+	public ResponseEntity<ResponseStructure<String>> paymentFailedException(AttachOperationFailedException exception){
+		ResponseStructure<String> apiResponse = new ResponseStructure<>();
+		apiResponse.setData(exception.getMessage());
+		apiResponse.setMessage("Exception handled");
+		apiResponse.setStatusCode(HttpStatus.NOT_ACCEPTABLE.value());
+		return new ResponseEntity<>(apiResponse,HttpStatus.NOT_ACCEPTABLE);
+	}
 }
