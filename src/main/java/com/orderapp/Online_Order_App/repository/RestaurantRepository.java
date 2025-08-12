@@ -16,8 +16,6 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
 	List<Food> findFoodByRestaurantId(@Param(value = "restaurant")int id);
 	
 	@Query("SELECT r.orders FROM Restaurant r WHERE r.id = :restaurantId")
-	
-
 	List<Order> findOrdersByRestaurant(@Param(value = "restaurantId")int id);
 
 	

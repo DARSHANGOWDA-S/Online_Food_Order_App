@@ -2,6 +2,8 @@ package com.orderapp.Online_Order_App.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -70,6 +72,7 @@ public class OrderServiceImplementation implements OrderService {
                 OrderItems orderItem = new OrderItems();
                 orderItem.setFood(food);
                 orderItem.setQuantity(request.getQuantity());
+                orderItem.setOrder(order);
 
                 items.add(orderItem);
 
@@ -89,5 +92,36 @@ public class OrderServiceImplementation implements OrderService {
             throw new PaymentFailedExeption("Payment was not successful, hence order cannot be placed.");
         }
     }
+
+	@Override
+	public void deleteOrder(Integer id) {
+		Order order = getOrder(id);
+		orderRepository.delete(order);
+		
+	}
+
+	@Override
+	public Order getOrder(Integer id) {
+		Optional<Order> order = orderRepository.findById(id);
+		if(order.isPresent()) {
+			return order.get();
+		}
+		throw new NoSuchElementException("Order with ID:"+id+" does not exist");
+		
+	}
+
+	@Override
+	public Order updateStatusByAdmin(OrderStatus status, Integer id) {
+		Order order = getOrder(id);
+		order.setStatus(status);
+		return orderRepository.save(order);
+	}
+
+	@Override
+	public String cancelOrder(Integer id) {
+		Order order = getOrder(id);
+		order.setStatus(OrderStatus.CANCELLED);
+		return "Order cancelled,your money will be refunded in 12 buisness hours";
+	}
 
 }

@@ -2,6 +2,8 @@ package com.orderapp.Online_Order_App.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -22,6 +24,7 @@ public class Order {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
+	@JsonIgnore
 	@ManyToOne
 	private Restaurant restaurant;
 	
