@@ -3,6 +3,8 @@ package com.orderapp.Online_Order_App.service;
 import java.util.List;
 import java.util.Set;
 
+import com.orderapp.Online_Order_App.entity.Food;
+import com.orderapp.Online_Order_App.entity.Order;
 import com.orderapp.Online_Order_App.entity.Restaurant;
 
 public interface RestaurantService {
@@ -18,6 +20,10 @@ public interface RestaurantService {
 	void deleteRestaurant(Integer id);
 
 	Restaurant assignFood(Integer restaurantId, Set<Integer> food);
+	
+	List<Food> findFoodByRestaurantId(Integer id);
+	
+	List<Order> findOrdersByRestaurantId(Integer id);
 	
 	
 

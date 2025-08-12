@@ -8,6 +8,8 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.orderapp.Online_Order_App.entity.Food;
+import com.orderapp.Online_Order_App.entity.Order;
 import com.orderapp.Online_Order_App.entity.Restaurant;
 import com.orderapp.Online_Order_App.repository.RestaurantRepository;
 
@@ -64,6 +66,25 @@ public class RestaurantServiceImplementation implements RestaurantService{
 		return null;
 	}
 
+	@Override
+	public List<Food> findFoodByRestaurantId(Integer id) {
+	    List<Food> food = restaurantRepository.findFoodByRestaurantId(id);
 
+	    if (food == null || food.isEmpty()) {
+	        throw new NoSuchElementException("Restaurant with ID: " + id + " not found or no food is assigned to the restaurant"
+	        );
+	    }
+
+	    return food;
+	}
+
+	@Override
+	public List<Order> findOrdersByRestaurantId(Integer id) {
+		List<Order> orders = restaurantRepository.findOrdersByRestaurant(id);
+		if(orders==null || orders.size()==0) {
+			throw new NoSuchElementException("Restaurant with ID: " + id + " not found or no food is assigned to the restaurant");
+		}
+		return orders;
+	}
 
 }

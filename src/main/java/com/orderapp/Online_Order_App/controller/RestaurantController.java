@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.orderapp.Online_Order_App.dto.ResponseStructure;
+import com.orderapp.Online_Order_App.entity.Food;
+import com.orderapp.Online_Order_App.entity.Order;
 import com.orderapp.Online_Order_App.entity.Restaurant;
 import com.orderapp.Online_Order_App.service.RestaurantService;
 
@@ -82,8 +84,26 @@ public class RestaurantController {
 		
 		return ResponseEntity.ok(apiResponse);
 	}
-
+    @GetMapping("/{id}/getAll")
+    public ResponseEntity<ResponseStructure<List<Food>>> getFoodByRestaurant(@PathVariable Integer id) {
+        ResponseStructure<List<Food>> apiResponse = new ResponseStructure<>();
+        apiResponse.setData(restaurantService.findFoodByRestaurantId(id));
+        apiResponse.setMessage("Food items found");
+        apiResponse.setStatusCode(HttpStatus.OK.value());
+        return ResponseEntity.ok(apiResponse);
     }
+    @GetMapping("/{id}/getAllOrders")
+    public ResponseEntity<ResponseStructure<List<Order>>> getOrdersByRestaurant(@PathVariable Integer id) {
+        ResponseStructure<List<Order>> apiResponse = new ResponseStructure<>();
+        apiResponse.setData(restaurantService.findOrdersByRestaurantId(id));
+        apiResponse.setMessage("Orders found");
+        apiResponse.setStatusCode(HttpStatus.OK.value());
+        return ResponseEntity.ok(apiResponse);
+    }
+    
+    
+}
+
 
     
 
