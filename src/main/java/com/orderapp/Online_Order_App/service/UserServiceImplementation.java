@@ -15,16 +15,14 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImplimentation implements UserService{
-	
+public class UserServiceImplementation implements UserService{
+
 	private final UserRepository userRepository;
 	
 	@Override
 	public User createUser(User user) {
-		
 		return userRepository.save(user);
 	}
-	
 
 	@Override
 	public User getUser(Integer id) {
@@ -32,36 +30,40 @@ public class UserServiceImplimentation implements UserService{
 		if(user.isPresent()) {
 			return user.get();
 		}
-		throw new NoSuchElementException("User with ID:"+id+"does not exist");
+		throw new NoSuchElementException("User with ID: "+id+" does not exist");
 	}
+	
 
 	@Override
 	public List<User> getAllUsers() {
-		// TODO Auto-generated method stub
-		return null;
+		return userRepository.findAll();
 	}
-
+	
+	
 	@Override
 	public User updateUser(User user, Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		User existing = getUser(id);
+		existing.setContactNumber(user.getContactNumber());
+		existing.setEmail(user.getEmail());
+		existing.setGender(user.getGender());
+		existing.setName(user.getName());
+		existing.setPassword(user.getPassword());
+		return userRepository.save(existing);
 	}
 
 	@Override
 	public void deleteUser(Integer id) {
-		// TODO Auto-generated method stub
-		
+		User user = getUser(id);
+		userRepository.delete(user);
 	}
 
 	@Override
-	public String uploadImage(MultipartFile file, Integer id) throws IOException {
-		byte[] image =file.getBytes();
+	public String uploadImage(MultipartFile file,Integer id) throws IOException{
+		byte[] image = file.getBytes();
 		User user = getUser(id);
 		user.setImage(image);
 		userRepository.save(user);
-		return "image uploaded";
-		
-	
+		return "Image uploaded";
 	}
 
 	@Override
@@ -69,10 +71,13 @@ public class UserServiceImplimentation implements UserService{
 		User user = getUser(id);
 		byte[] image = user.getImage();
 		if(image==null || image.length==0) {
-			throw new NoSuchElementException("User with ID:"+id+"does not have any image");
+			throw new NoSuchElementException("User with ID: "+id+" does not have any image uploaded");
 		}
 		return image;
 	}
+	
+	
+	
 
 	
 	

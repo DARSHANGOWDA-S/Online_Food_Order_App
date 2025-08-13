@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
 	
-	User createUser(User user);
+    User createUser(User user);
 	
 	User getUser(Integer id);
 	

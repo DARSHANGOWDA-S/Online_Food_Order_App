@@ -3,6 +3,7 @@ package com.orderapp.Online_Order_App.controller;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.query.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,76 +34,78 @@ public class RestaurantController {
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
-    @GetMapping("/get/{id}")
-    public ResponseEntity<ResponseStructure<Restaurant>> getById(@PathVariable Integer id) {
-       
-    	Restaurant response = restaurantService.getById(id);
-        ResponseStructure<Restaurant> apiResponse = new ResponseStructure<>();
-        apiResponse.setData(response);
-        apiResponse.setMessage("Request object Found");
-        apiResponse.setStatusCode(HttpStatus.OK.value());
+	@GetMapping("/get/{id}")
+	public ResponseEntity<ResponseStructure<Restaurant>> getById(@PathVariable Integer id){
+		Restaurant response = restaurantService.getById(id);
+		ResponseStructure<Restaurant> apiResponse = new ResponseStructure<>();
+		apiResponse.setData(response);
+		apiResponse.setMessage("Restaurant object found");
+		apiResponse.setStatusCode(HttpStatus.OK.value());
 
-        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-    }
+		return new ResponseEntity<>(apiResponse,HttpStatus.OK);
+	}
     
-    @GetMapping("/getall")
-    public ResponseEntity<ResponseStructure<List<Restaurant>>> getAllRestaurants() {
-       
-    	List<Restaurant> response = restaurantService.getAllRestaurants();
-        ResponseStructure<List<Restaurant>> apiResponse = new ResponseStructure<>();
-        apiResponse.setData(response);
-        apiResponse.setMessage("All restaurants fetched successfully");
-        apiResponse.setStatusCode(HttpStatus.OK.value());
+	@GetMapping("/getAll")
+	public ResponseEntity<ResponseStructure<Page>> getAllRestaurants(
+			@RequestParam(defaultValue = "0",required = false) int pageNum,
+			@RequestParam(defaultValue = "5", required = false) int pageSize,
+			@RequestParam(defaultValue = "createdAt", required = false) String sortBy){
+		Page response = (Page) restaurantService.getAllRestaurants(pageNum,pageSize,sortBy);
+		ResponseStructure<Page> apiResponse = new ResponseStructure<Page>();
+		apiResponse.setData(response);
+		apiResponse.setStatusCode(HttpStatus.OK.value());
+		apiResponse.setMessage("Api ran successfully");
+		return ResponseEntity.ok(apiResponse);
+	}
+	
+	@PutMapping("/update/{id}")
+	public ResponseEntity<ResponseStructure<Restaurant>> updateRestaurant(@PathVariable Integer id,
+			@RequestBody Restaurant updatedRestaurant){
+		Restaurant updated = restaurantService.updateRestaurantById(id, updatedRestaurant);
+		ResponseStructure<Restaurant> apiResponse = new ResponseStructure<>();
+		apiResponse.setData(updated);
+		apiResponse.setMessage("Restaurant object updated");
+		apiResponse.setStatusCode(HttpStatus.OK.value());
 
-        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-    }
-    @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseStructure<Restaurant>> updateRestaurantById(@PathVariable Integer id, @RequestBody Restaurant updatedRestaurant) {
-        
-        Restaurant update = restaurantService.updateRestaurantById(id, updatedRestaurant);
-        ResponseStructure<Restaurant> apiResponse = new ResponseStructure<>();
-        apiResponse.setData(update);
-        apiResponse.setMessage("Request object Updated");
-        apiResponse.setStatusCode(HttpStatus.OK.value());
-
-        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-    }
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Object> deleteRestaurant(@PathVariable Integer id) {
-        restaurantService.deleteRestaurant(id);
-        
-        
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-    @PostMapping("/{restaurantId}/assignFood")
-	public ResponseEntity<ResponseStructure<Restaurant>> assignFood(@PathVariable Integer restaurantId,@RequestBody Set<Integer> food){
+		return new ResponseEntity<>(apiResponse,HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/{id}/delete")
+	public ResponseEntity<Object> deleteRestaurant(@PathVariable Integer id) {
+		restaurantService.deleteRestaurant(id);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	@PostMapping("/{restaurantId}/assignFood")
+	public ResponseEntity<ResponseStructure<Restaurant>> assignFood(@PathVariable Integer restaurantId, @RequestBody Set<Integer> food){
 		Restaurant restaurant = restaurantService.assignFood(restaurantId, food);
 		ResponseStructure<Restaurant> apiResponse = new ResponseStructure<>();
 		apiResponse.setData(restaurant);
-		apiResponse.setMessage("Assigned sucessfully");
+		apiResponse.setMessage("Assigned");
 		apiResponse.setStatusCode(HttpStatus.OK.value());
-		
 		return ResponseEntity.ok(apiResponse);
 	}
-    @GetMapping("/{id}/getAll")
-    public ResponseEntity<ResponseStructure<List<Food>>> getFoodByRestaurant(@PathVariable Integer id) {
-        ResponseStructure<List<Food>> apiResponse = new ResponseStructure<>();
-        apiResponse.setData(restaurantService.findFoodByRestaurantId(id));
-        apiResponse.setMessage("Food items found");
-        apiResponse.setStatusCode(HttpStatus.OK.value());
-        return ResponseEntity.ok(apiResponse);
-    }
-    @GetMapping("/{id}/getAllOrders")
-    public ResponseEntity<ResponseStructure<List<Order>>> getOrdersByRestaurant(@PathVariable Integer id) {
-        ResponseStructure<List<Order>> apiResponse = new ResponseStructure<>();
-        apiResponse.setData(restaurantService.findOrdersByRestaurantId(id));
-        apiResponse.setMessage("Orders found");
-        apiResponse.setStatusCode(HttpStatus.OK.value());
-        return ResponseEntity.ok(apiResponse);
-    }
-    
-    
+	
+	@GetMapping("/{id}/getAll")
+	public ResponseEntity<ResponseStructure<List<Food>>> getFoodByRestaurant(@PathVariable Integer id){
+		ResponseStructure<List<Food>> apiResponse = new ResponseStructure<List<Food>>();
+		apiResponse.setData(restaurantService.findFoodByRestaurantId(id));
+		apiResponse.setMessage("Food items found");
+		apiResponse.setStatusCode(HttpStatus.OK.value());
+		return ResponseEntity.ok(apiResponse);
+	}
+	
+	@GetMapping("/{id}/getAllOrders")
+	public ResponseEntity<ResponseStructure<List<Order>>> getOrdersByRestaurant(@PathVariable Integer id){
+		ResponseStructure<List<Order>> apiResponse = new ResponseStructure<List<Order>>();
+		apiResponse.setData(restaurantService.findOrdersByRestaurantId(id));
+		apiResponse.setMessage("Orders found");
+		apiResponse.setStatusCode(HttpStatus.OK.value());
+		return ResponseEntity.ok(apiResponse);
+	}
 }
+    
+
 
 
     

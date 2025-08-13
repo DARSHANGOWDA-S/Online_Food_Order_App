@@ -1,5 +1,7 @@
 package com.orderapp.Online_Order_App.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,7 +20,8 @@ public class OrderItems {
     private Food food;
 
     @ManyToOne
+    @JsonIgnore
     private Order order;  // ✅ This now refers to your own entity
 
-    private int quantity;
+    
 }
