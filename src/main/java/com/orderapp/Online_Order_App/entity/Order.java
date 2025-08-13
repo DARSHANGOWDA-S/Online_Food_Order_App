@@ -2,6 +2,8 @@ package com.orderapp.Online_Order_App.entity;
 
 import java.util.List;
 
+import org.apache.catalina.User;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -36,6 +38,10 @@ public class Order {
 	private OrderStatus status;
 	
 	private Double totalPrice;
+	
+	@JsonIgnore
+	@ManyToOne
+	private User user;
 	
 
 }
