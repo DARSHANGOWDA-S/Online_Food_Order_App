@@ -23,7 +23,7 @@ public class Food {
 	@JsonIgnore
 	@ManyToMany
 	private String name;
-	private String describtion;
+	private String description;
 	private Float price;
 	
 	

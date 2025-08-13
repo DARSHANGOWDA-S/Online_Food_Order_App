@@ -16,6 +16,7 @@ import com.orderapp.Online_Order_App.entity.Order;
 import com.orderapp.Online_Order_App.entity.OrderItems;
 import com.orderapp.Online_Order_App.entity.OrderStatus;
 import com.orderapp.Online_Order_App.entity.Restaurant;
+import com.orderapp.Online_Order_App.entity.User;
 import com.orderapp.Online_Order_App.exception.PaymentFailedExeption;
 import com.orderapp.Online_Order_App.repository.OrderRepository;
 
@@ -28,6 +29,7 @@ public class OrderServiceImplementation implements OrderService {
     private final RestaurantService restaurantService;
     private final FoodService foodService;
     private final OrderRepository orderRepository;
+    private final UserService userService;
 
     @Override
     public BillResponse generatedBill(OrderRequest orderRequest) {
@@ -62,6 +64,10 @@ public class OrderServiceImplementation implements OrderService {
             Restaurant restaurant = restaurantService.getById(payment.getRestaurantId());
             //set restaurant to order
             order.setRestaurant(restaurant);
+            
+            //set user to order
+            User user = userService.getUser(payment.getUserId());
+            order.setUser(user);
 
             List<OrderItems> items = new ArrayList<>();
             double totalPrice = 0;

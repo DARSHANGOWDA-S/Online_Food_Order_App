@@ -9,5 +9,5 @@ public class PaymentDto {
 	private List<OrderItemRequest> orderItems;
 	private boolean isPaymentSuccesful;
 	private Integer restaurantId;
-
+	private Integer userId;
 }

@@ -40,8 +40,8 @@ public class FoodServiceImplementation implements FoodService {
         if (food.getName() != null) {
             existingFood.setName(food.getName());
         }
-        if (food.getDescribtion() != null) {
-            existingFood.setDescribtion(food.getDescribtion());
+        if (food.getDescription() != null) {
+            existingFood.setDescription(food.getDescription());
         }
         if (food.getPrice() != null) {
             existingFood.setPrice(food.getPrice());
